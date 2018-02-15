@@ -1,0 +1,20 @@
+
+server:
+  port: 7777
+  contextPath: /
+
+management:
+  context-path: /manage
+
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+  resources:
+    add-mappings: true
+
+rly8:
+  host: "192.168.1.201"
+  port: 2000
+

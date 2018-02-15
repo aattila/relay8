@@ -1,0 +1,58 @@
+.messageBox{
+	border: 1px solid #ddd;
+	position:fixed;
+	z-index:1055;
+	left:0;
+	top:0;
+	padding:15px;
+	min-width:350px;
+	min-height:100px;
+	border-radius:10px;
+	box-shadow:6px 6px 6px 1px rgba(0,0,0,0.12);
+	display:none
+}
+.messageBox>.caption{
+	display:none;
+	font-size:0.6em;
+	position:relative;
+	top:8px;
+	text-align:right;
+	font-style:italic
+}
+.messageBox>.icon{
+	font-size:3em;
+	float:left;
+	padding-right:1.5em;
+	padding-bottom:10px;
+	width:1em;
+	text-align:center
+}
+.messageBox>.title{
+	font-size:1.5em;
+	font-weight:700;
+	margin-bottom:12px
+}
+.messageBox>.toolbar{
+	text-align:right;
+	margin-top:15px;
+	border-top:1px solid #ddd;
+	padding-top:8px;
+}
+.messageBox>.toolbar>button{
+	min-width:4em
+}
+.messageBox-modal{
+	position:fixed;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	z-index:1050;
+	display:none;
+	overflow:hidden;
+	outline:0;
+	background-color:rgba(0,0,0,0.3)
+}
+.bg-white{
+	background-color:#fff
+}

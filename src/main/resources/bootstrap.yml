@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: rly8
+    version: ${version}
+    env: ${env}
+
+  profiles:
+    active: ${env}
+
+logging:
+  file: rly8.log
+  path: ${logPath}

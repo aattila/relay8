@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title>RLY-8 Management</title>
+    <link rel="stylesheet" type="text/css" media="all" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="http://fonts.googleapis.com/css?family=Varela+Round"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+    <!--<link rel="stylesheet" type="text/css" media="all" th:href="@{/css/messageBox.css}"/>-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+</head>
+<body>
+
+<div class="text-center" style="padding:50px 0">
+    <div class="logo">RLY-8 Management</div>
+    <div class="login-form-1">
+        <form id="rly8-form" class="text-left" th:action="@{/logout}" method="post">
+            <div class="login-form-main-message"></div>
+            <div class="main-login-form">
+                <div class="login-group">
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay1}">NC</label>
+                        <label class="switch">
+                            <input id="relay1" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay2}">NC</label>
+                        <label class="switch">
+                            <input id="relay2" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay3}">NC</label>
+                        <label class="switch">
+                            <input id="relay3" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay4}">NC</label>
+                        <label class="switch">
+                            <input id="relay4" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay5}">NC</label>
+                        <label class="switch">
+                            <input id="relay5" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay6}">NC</label>
+                        <label class="switch">
+                            <input id="relay6" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay7}">NC</label>
+                        <label class="switch">
+                            <input id="relay7" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="rly_label" th:text="#{relay8}">NC</label>
+                        <label class="switch">
+                            <input id="relay8" type="checkbox"/>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="login-button" value="Sign Out"><i class="fa fa-chevron-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" th:src="@{/js/rly8.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.messagebox.min.js}"></script>
+
+</body>
+</html>

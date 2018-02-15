@@ -1,0 +1,19 @@
+
+logPath = 'log'
+
+
+env {
+    local {
+        logPath = 'rly8/build/log'
+    }
+
+    dev {
+    }
+
+    test {
+    }
+
+    prod {
+    }
+}
+
