@@ -51,6 +51,6 @@ message will shown and all the switches wil be hidden.
 
 ## More than a deploy
 
-You can deploy the application also a RaspberryPI (but be sure you have Java 8 on it) and use different public and free 
+You can deploy the application also to a RaspberryPI (but be sure you have Java 8 on it) and use different public and free 
 services to have access into your application without port forwarding.  
 
