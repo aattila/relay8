@@ -49,6 +49,11 @@ There is also the device name is fetched and used as title. Of course the screen
 At that moment when you switch a relay that is immediately will set also at the device. In case of any failure an error
 message will shown and all the switches wil be hidden.
 
+### Ad-hoc Setup
+
+If you are lazy enough to modify the settings in ```application.yml``` file you can start the application in that way to override some default settings. An example if you want to start the application with a specific device IP address and a custom password, just run:
+```java -Drly8.host=192.168.1.10 -Dspring.security.user.password=your_password -jar relay8-0.1.0-SNAPSHOT.jar```
+
 ## More than a deploy
 
 You can deploy the application also to a RaspberryPI (but be sure you have Java 8 on it) and use different public and free 
