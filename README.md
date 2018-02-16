@@ -36,12 +36,12 @@ To run the application firs copy the jar fle in their final destination go into 
 
 In your browser go tho the address ```http://localhost:7777``` and you will find this login screen:
 
-![Login](https://github.com/aattila/relay8/blob/master/src/main/resources/docs/login.png?raw=true)
+<img src="https://github.com/aattila/relay8/blob/master/src/main/resources/docs/login.png?raw=true" alt="Login" width="400">
 
 Use your login credentials that you are set in the file ```application.yml``` and you are done. 
 This page will be loaded:
 
-![Relays](https://github.com/aattila/relay8/blob/master/src/main/resources/docs/someset.png?raw=true)
+<img src="https://github.com/aattila/relay8/blob/master/src/main/resources/docs/someset.png?raw=true" alt="Login" width="400">
 
 When this page is opening the state of the relays will be fetched from the device and the switches will set properly.
 There is also the device name is fetched and used as title. Of course the screenshot has modified labels (label.properties).
@@ -52,6 +52,7 @@ message will shown and all the switches wil be hidden.
 ### Ad-hoc Setup
 
 If you are lazy enough to modify the settings in ```application.yml``` file you can start the application in that way to override some default settings. An example if you want to start the application with a specific device IP address and a custom password, just run:
+
 ```java -Drly8.host=192.168.1.10 -Dspring.security.user.password=your_password -jar relay8-0.1.0-SNAPSHOT.jar```
 
 ## More than a deploy
