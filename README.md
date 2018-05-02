@@ -55,6 +55,10 @@ If you are lazy enough to modify the settings in ```application.yml``` file you 
 
 ```java -Drly8.host=192.168.1.10 -Dspring.security.user.password=your_password -jar relay8-0.1.0-SNAPSHOT.jar```
 
+### Switchback feature
+
+In case if you want to automatically switching back a relay after a predefined time please set the ```rly8.switchback.relay*``` property in the ```application.yml```. The value is in minutes
+
 ## More than a deploy
 
 You can deploy the application also to a RaspberryPI (but be sure you have Java 8 on it) and use different public and free 
