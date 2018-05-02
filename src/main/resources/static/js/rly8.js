@@ -74,13 +74,14 @@ function() {
 
     $('#rly8-form input[type=checkbox]').change(function() {
           var idx = parseInt(this.id.substr(5, 1)) - 1;
+          var relay = idx+1;
           if(this.checked) {
               status = status.replaceAt(idx, "1");
           }
           else {
               status = status.replaceAt(idx, "0");
           }
-          $.post( "rly8/set?status="+status, function(isOk) {
+          $.post( "rly8/set?relay="+relay+"&status="+status, function(isOk) {
               if(!isOk) {
                 console.log("Cannot set relay to: "+status)
                 msg.data('messageBox').danger('Data error', 'Cannot send data to the device! After you fixed the problem please reload the page.');

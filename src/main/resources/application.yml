@@ -17,4 +17,15 @@ spring:
 rly8:
   host: "192.168.1.201"
   port: 2000
+  switchback:
+    relay1: 0
+    relay2: 0
+    relay3: 0
+    relay4: 0
+    relay5: 0
+    relay6: 0
+    relay7: 0
+    relay8: 0
+
+
 
