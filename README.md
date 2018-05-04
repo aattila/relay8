@@ -55,9 +55,13 @@ If you are lazy enough to modify the settings in ```application.yml``` file you 
 
 ```java -Drly8.host=192.168.1.10 -Dspring.security.user.password=your_password -jar relay8-0.1.0-SNAPSHOT.jar```
 
-### Switchback feature
+### Cronjob feature (automated switch on)
 
-In case if you want to automatically switching back a relay after a predefined time please set the ```rly8.switchback.relay*``` property in the ```application.yml```. The value is in minutes
+You can fully automate your relays switch on by specifying a cron per relay. First you need to switch on this funtionality by setting the ```rly8.relay?.auto``` property (true) in the ```application.yml```. As a second step you can specify a cron string for the ```rly8.relay?.cron``` property.
+
+### Switchback feature (automated switch off)
+
+In case if you want to automatically switching off a relay after a predefined time please set the ```rly8.relay?.switchback``` property in the ```application.yml```. The value is in minutes and 0 means no switchback.
 
 ## More than a deploy
 
