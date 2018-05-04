@@ -17,15 +17,38 @@ spring:
 rly8:
   host: "192.168.1.201"
   port: 2000
-  switchback:
-    relay1: 0
-    relay2: 0
-    relay3: 0
-    relay4: 0
-    relay5: 0
-    relay6: 0
-    relay7: 0
-    relay8: 0
+  relay1:
+    auto: true
+    cron: "0 0 5,14,21 * * ?"
+    switchback: 120
+  relay2:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay3:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay4:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay5:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay6:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay7:
+    auto: false
+    cron: "0 0 10 * * ?"
+    switchback: 0
+  relay8:
+    auto: false
+    cron: "0 0/5 * * * ?"
+    switchback: 2
 
 
 

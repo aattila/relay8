@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Properties;
 
 @Component
@@ -19,7 +18,7 @@ public class PropertyStore {
 
     private static final Logger log = LoggerFactory.getLogger(PropertyStore.class);
 
-    public static final String FILE_NAME = "relay.properties";
+    public static final String FILE_NAME = System.getProperty("user.dir")+"relay.properties";
 
     private Properties properties = new Properties();
     private DefaultPropertiesPersister persister = new DefaultPropertiesPersister();
@@ -33,13 +32,13 @@ public class PropertyStore {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                log.error("Properties file could not be created!", e);
+                log.error("Properties file {} could not be created!", FILE_NAME, e);
             }
         } else {
             try (FileInputStream fis = new FileInputStream(file)) {
                 persister.load(properties, fis);
             } catch (IOException e) {
-                log.error("Properties file could not be read!", e);
+                log.error("Properties file {} could not be read!", FILE_NAME, e);
             }
 
         }
@@ -58,7 +57,7 @@ public class PropertyStore {
     }
 
     public long getTimestamp(int relay) {
-        if(properties.containsKey(String.valueOf(relay))) {
+        if (properties.containsKey(String.valueOf(relay))) {
             String stringValue = properties.getProperty(String.valueOf(relay));
             return Long.parseLong(stringValue);
         }
