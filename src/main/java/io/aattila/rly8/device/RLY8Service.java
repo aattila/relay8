@@ -1,5 +1,7 @@
 package io.aattila.rly8.device;
 
+import io.aattila.rly8.util.Device;
+import io.aattila.rly8.util.DummyDevice;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,30 +17,12 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 @Service
-public class RLY8Service {
-
-    private static final String RELAY = "relay";
-    private static final String RELAYSTATUS = "relayStatus";
-    private static final String ON = "on";
-    private static final String OFF = "off";
-    private static final String NETCONFIG = "netconfig";
-    private static final String IPADDR = "ipaddr";
-    private static final String GATEWAY = "gateway";
-    private static final String NETMASK = "netmask";
-    private static final String PORT = "port";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final String RS485ADDR = "RS485addr";
-    private static final String BAUDRATE = "baudrate";
-    private static final String DHCP = "dhcp";
-    private static final String REBOOT = "reboot";
-    private static final String GET = "get";
-    private static final String RESP = "resp";
-    private static final String OK = "ok";
+public class RLY8Service implements Device {
 
     Logger log = LoggerFactory.getLogger(RLY8Service.class);
 
     private SocketAddress address;
+    DummyDevice dummyDevice;
 
     @Value("${rly8.host}")
     private String host;
@@ -51,7 +35,12 @@ public class RLY8Service {
 
         address = new InetSocketAddress(host, port);
 
-//        log.info("{}", getRelayStatus());
+        String dummy = System.getProperty("dummy.device", "false");
+        if (Boolean.parseBoolean(dummy)) {
+            log.warn("Dummy mode is set on, no RLY-8 device will used!");
+            dummyDevice = new DummyDevice();
+        }
+
     }
 
     public boolean setRelayStatus(byte pattern) throws Exception {
@@ -158,6 +147,12 @@ public class RLY8Service {
 
     private String send(String msg) throws Exception {
         log.info("Connecting to RLY-8 at {}:{}", host, port);
+
+        if (dummyDevice != null) {
+            dummyDevice.setMessage(msg);
+            return dummyDevice.getResponse();
+        }
+
         Socket socket = new Socket();
         socket.connect(address);
         socket.setReuseAddress(true);

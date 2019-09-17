@@ -18,7 +18,7 @@ public class PropertyStore {
 
     private static final Logger log = LoggerFactory.getLogger(PropertyStore.class);
 
-    public static final String FILE_NAME = System.getProperty("user.dir")+"relay.properties";
+    public static final String FILE_NAME = System.getProperty("user.dir")+"/relay.properties";
 
     private Properties properties = new Properties();
     private DefaultPropertiesPersister persister = new DefaultPropertiesPersister();
@@ -27,6 +27,7 @@ public class PropertyStore {
 
     @PostConstruct
     public void init() {
+        log.info("Relay properties file is: {}", FILE_NAME);
         file = new File(FILE_NAME);
         if (!file.exists()) {
             try {

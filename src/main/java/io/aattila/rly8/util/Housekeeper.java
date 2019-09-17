@@ -4,15 +4,22 @@ import io.aattila.rly8.device.RLY8Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class Housekeeper {
+public class Housekeeper implements DynamicProperties {
 
     Logger log = LoggerFactory.getLogger(Housekeeper.class);
 
@@ -22,58 +29,35 @@ public class Housekeeper {
     @Autowired
     RLY8Service rly8Service;
 
-    @Value("${rly8.relay1.switchback}")
-    private int switchbackTime1;
-    @Value("${rly8.relay1.auto}")
-    private boolean auto1;
+    private static final Yaml yaml = new Yaml();
 
-    @Value("${rly8.relay2.switchback}")
-    private int switchbackTime2;
-    @Value("${rly8.relay2.auto}")
-    private boolean auto2;
+    private Map<String, Integer> values;
+    private long lastModified;
 
-    @Value("${rly8.relay3.switchback}")
-    private int switchbackTime3;
-    @Value("${rly8.relay3.auto}")
-    private boolean auto3;
 
-    @Value("${rly8.relay4.switchback}")
-    private int switchbackTime4;
-    @Value("${rly8.relay4.auto}")
-    private boolean auto4;
+    @Scheduled(initialDelay = 10000, fixedRate = 30000)
+    public void switchback() throws Exception {
 
-    @Value("${rly8.relay5.switchback}")
-    private int switchbackTime5;
-    @Value("${rly8.relay5.auto}")
-    private boolean auto5;
+        File triggersFile = new File(FILE_NAME);
+        if(!triggersFile.exists()) {
+            log.warn("Switchback not used! No switchback definition file found: {}", FILE_NAME);
+            return;
+        }
 
-    @Value("${rly8.relay6.switchback}")
-    private int switchbackTime6;
-    @Value("${rly8.relay6.auto}")
-    private boolean auto6;
-
-    @Value("${rly8.relay7.switchback}")
-    private int switchbackTime7;
-    @Value("${rly8.relay7.auto}")
-    private boolean auto7;
-
-    @Value("${rly8.relay8.switchback}")
-    private int switchbackTime8;
-    @Value("${rly8.relay8.auto}")
-    private boolean auto8;
-
-    @Scheduled(initialDelay = 30000, fixedRate = 30000)
-    public void switchback() {
+        long modifiedTime = triggersFile.lastModified();
+        if (lastModified != modifiedTime) {
+            if(lastModified > 0) {
+                log.info("The switchback file is modified, going to reload.");
+            }
+            lastModified = modifiedTime;
+            values = loadData(triggersFile);
+        }
 
         Boolean[] switchbackChecks = new Boolean[8];
-        switchbackChecks[0] = isSwitchbackNeeded(1, switchbackTime1);
-        switchbackChecks[1] = isSwitchbackNeeded(2, switchbackTime2);
-        switchbackChecks[2] = isSwitchbackNeeded(3, switchbackTime3);
-        switchbackChecks[3] = isSwitchbackNeeded(4, switchbackTime4);
-        switchbackChecks[4] = isSwitchbackNeeded(5, switchbackTime5);
-        switchbackChecks[5] = isSwitchbackNeeded(6, switchbackTime6);
-        switchbackChecks[6] = isSwitchbackNeeded(7, switchbackTime7);
-        switchbackChecks[7] = isSwitchbackNeeded(8, switchbackTime8);
+        values.forEach((name, time) -> {
+            int relay = Integer.parseInt(name.substring(RELAY.length(), name.length()));
+            switchbackChecks[relay - 1] = isSwitchbackNeeded(relay, time);
+        });
 
         boolean switchbackDetected = Arrays.asList(switchbackChecks).stream()
                 .filter(switchbackCheck -> switchbackCheck)
@@ -82,6 +66,8 @@ public class Housekeeper {
 
         if (switchbackDetected) {
 
+            log.info("Switchback detected");
+
             boolean isSwitchbackOk = false;
 
             try {
@@ -89,7 +75,7 @@ public class Housekeeper {
                 for (int i = 0; i < 8; i++) {
                     if (switchbackChecks[i]) {
                         log.info("Switchback detected for the relay {}", i + 1);
-                        statuses[i] = !statuses[i];
+                        statuses[i] = false;
                     }
                 }
                 Thread.sleep(300); // a minimum time between two RLY-8 access
@@ -128,73 +114,17 @@ public class Housekeeper {
         return (now - t) >= switchbackTime * 60000;
     }
 
-    @Scheduled(cron = "${rly8.relay1.cron}")
-    public void relay1() {
-        if (auto1) {
-            switchOn(1);
+    private Map<String, Integer> loadData(File triggersFile) throws IOException {
+        Map<String, Integer> switchbacks = new HashMap<>();
+        try (InputStream in = new FileInputStream(triggersFile)) {
+            LinkedHashMap map = (LinkedHashMap) yaml.load(in);
+            LinkedHashMap values = (LinkedHashMap) map.get(SWITCHBACK);
+            values.forEach((key, value) -> {
+                switchbacks.put((String) key, (int) value);
+            });
         }
+        log.info("Switchbacks are loaded: {}", switchbacks);
+        return switchbacks;
     }
 
-    @Scheduled(cron = "${rly8.relay2.cron}")
-    public void relay2() {
-        if (auto2) {
-            switchOn(2);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay3.cron}")
-    public void relay3() {
-        if (auto3) {
-            switchOn(3);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay4.cron}")
-    public void relay4() {
-        if (auto4) {
-            switchOn(4);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay5.cron}")
-    public void relay5() {
-        if (auto5) {
-            switchOn(5);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay6.cron}")
-    public void relay6() {
-        if (auto6) {
-            switchOn(6);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay7.cron}")
-    public void relay7() {
-        if (auto7) {
-            switchOn(7);
-        }
-    }
-
-    @Scheduled(cron = "${rly8.relay8.cron}")
-    public void relay8() {
-        if (auto8) {
-            switchOn(8);
-        }
-    }
-
-    private void switchOn(int relay) {
-        try {
-            boolean[] statuses = rly8Service.getRelayStatus();
-            statuses[relay-1] = true;
-            Thread.sleep(300); // a minimum time between two RLY-8 access
-            boolean isOk = rly8Service.setRelayStatus(statuses);
-            if (isOk) {
-                propertyStore.setTimestamp(relay, System.currentTimeMillis());
-            }
-        } catch (Exception e) {
-            log.error("Cannot switch the relay {}", relay, e);
-        }
-    }
 }

@@ -1,0 +1,26 @@
+
+sensors:
+  irrigation:
+    type: yaml
+    source: /var/app/environment/environment.yml
+    key: outside.irrigation
+
+triggers:
+  backyard:
+    relay: 1
+    cron: "0 */1 * * * ?"
+    sensor: irrigation
+  goose_lake:
+    relay: 1
+    cron: "0 0 6,18 * * ?"
+
+switchback:
+  relay1: 40
+  relay2: 0
+  relay3: 0
+  relay4: 0
+  relay5: 0
+  relay6: 0
+  relay7: 0
+  relay8: 0
+

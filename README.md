@@ -55,16 +55,60 @@ If you are lazy enough to modify the settings in ```application.yml``` file you 
 
 ```java -Drly8.host=192.168.1.10 -Dspring.security.user.password=your_password -jar relay8-0.1.0-SNAPSHOT.jar```
 
-### Cronjob feature (automated switch on)
-
-You can fully automate your relays switch on by specifying a cron per relay. First you need to switch on this funtionality by setting the ```rly8.relay?.auto``` property (true) in the ```application.yml```. As a second step you can specify a cron string for the ```rly8.relay?.cron``` property.
-
-### Switchback feature (automated switch off)
-
-In case if you want to automatically switching off a relay after a predefined time please set the ```rly8.relay?.switchback``` property in the ```application.yml```. The value is in minutes and 0 means no switchback.
-
 ## More than a deploy
 
 You can deploy the application also to a RaspberryPI (but be sure you have Java 8 on it) and use different public and free 
 services to have access into your application without port forwarding.  
+
+## Features
+
+### Dynamic Properties
+
+The most of the features encountered at the chapters below are using properties from a dedicated YAML file. 
+This file can be changed at runtime and any modification will be updated properly.
+This dynamic file name is _triggers.yml_ and that needs to be placed in the working directory. An example file is looking like this:
+```
+sensors:
+  irrigation:
+    type: yaml
+    source: /var/app/environment/environment.yml
+    key: outside.irrigation
+
+triggers:
+  backyard:
+    relay: 1
+    cron: "0 */1 * * * ?"
+    sensor: irrigation
+  goose_lake:
+    relay: 1
+    cron: "0 0 6,18 * * ?"
+
+switchback:
+  relay1: 40
+  relay2: 0
+  relay3: 0
+  relay4: 0
+  relay5: 0
+  relay6: 0
+  relay7: 0
+  relay8: 0
+```
+
+The following chapters will detail each of those sections.
+
+### Triggers (automated switch on)
+
+You can fully automate your relays switch on by specifying a cron per relay. First you need to switch on this funtionality by setting the ```rly8.relay?.auto``` property (true) in the ```application.yml```. As a second step you can specify a cron string for the ```rly8.relay?.cron``` property.
+
+### Switchback (automated switch off)
+
+In case if you want to automatically switching off a relay after a predefined time please set the ```rly8.relay?.switchback``` property in the ```application.yml```. The value is in minutes and 0 means no switchback.
+
+### Senzor checks
+
+
+### Headless (dummy device)
+
+The application can be used also in test mode, without the RLY-8 device. For this please start tha applciation with the  parameter ```-Ddummy.device=true```
+
 
